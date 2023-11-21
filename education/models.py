@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 from config.settings import NULLABLE
@@ -22,7 +23,7 @@ class Lesson(models.Model):
     picture = models.ImageField(upload_to='course/', verbose_name='превью', **NULLABLE)
     link_to_video = models.URLField(max_length=200, **NULLABLE)
 
-    link_to_course = models.ForeignKey(Course, on_delete=models.SET_NULL, **NULLABLE)
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, related_name='lesson', **NULLABLE)
 
     def __str__(self):
         return self.name
@@ -30,3 +31,24 @@ class Lesson(models.Model):
     class Meta:
         verbose_name = 'урок'
         verbose_name_plural = 'уроки'
+        # order_with_respect_to = "course"
+
+
+class Payment(models.Model):
+    CARD = 'card'
+    TRANSLATION = 'translation'
+
+    WAY = [
+        (CARD, 'card'),
+        (TRANSLATION, 'translation'),
+    ]
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                             verbose_name='покупатель')
+    date = models.DateTimeField(auto_now_add=True, verbose_name='дата оплаты')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='купил курс', related_name='payment',
+                               **NULLABLE)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name='купил урок', related_name='payment',
+                               **NULLABLE)
+    sum_of_pay = models.PositiveIntegerField(verbose_name='сумма оплаты')
+    way_of_pay = models.CharField(choices=WAY, verbose_name='способ оплаты', **NULLABLE)
