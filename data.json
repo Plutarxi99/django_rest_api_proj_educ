@@ -1,0 +1,235 @@
+[
+  {
+    "model": "education.course",
+    "pk": 1,
+    "fields": {
+      "name": "Химия.Анаболики",
+      "picture": "",
+      "description": "Для качков, чтобы быстро накачаться"
+    }
+  },
+  {
+    "model": "education.course",
+    "pk": 2,
+    "fields": {
+      "name": "Компьютер",
+      "picture": "",
+      "description": "Узнаешь, все комплектующие"
+    }
+  },
+  {
+    "model": "education.course",
+    "pk": 3,
+    "fields": {
+      "name": "Мышцы",
+      "picture": "",
+      "description": "Узнаешь, все мышцы в теле человека"
+    }
+  },
+  {
+    "model": "education.lesson",
+    "pk": 1,
+    "fields": {
+      "name": "Креатин",
+      "description": "Добавка для самочувствия",
+      "picture": "",
+      "link_to_video": null,
+      "course": 1
+    }
+  },
+  {
+    "model": "education.lesson",
+    "pk": 2,
+    "fields": {
+      "name": "Протеин",
+      "description": "Добавка для роста мышц",
+      "picture": "",
+      "link_to_video": null,
+      "course": 1
+    }
+  },
+  {
+    "model": "education.lesson",
+    "pk": 3,
+    "fields": {
+      "name": "Витамины",
+      "description": "Добавка для самочувствия",
+      "picture": "",
+      "link_to_video": null,
+      "course": 1
+    }
+  },
+  {
+    "model": "education.lesson",
+    "pk": 4,
+    "fields": {
+      "name": "Видеокарта",
+      "description": "Выводит изображение",
+      "picture": "",
+      "link_to_video": null,
+      "course": 2
+    }
+  },
+  {
+    "model": "education.lesson",
+    "pk": 5,
+    "fields": {
+      "name": "Процессор",
+      "description": "Высчитывает операции",
+      "picture": "",
+      "link_to_video": null,
+      "course": 2
+    }
+  },
+  {
+    "model": "education.lesson",
+    "pk": 6,
+    "fields": {
+      "name": "Маттеринская плата",
+      "description": "Питает все элементы компьютера",
+      "picture": "",
+      "link_to_video": null,
+      "course": 2
+    }
+  },
+  {
+    "model": "education.lesson",
+    "pk": 7,
+    "fields": {
+      "name": "Бицепс",
+      "description": "Должен быть большой",
+      "picture": "",
+      "link_to_video": null,
+      "course": 3
+    }
+  },
+  {
+    "model": "education.lesson",
+    "pk": 8,
+    "fields": {
+      "name": "Трицепс",
+      "description": "Должен быть очень большой",
+      "picture": "",
+      "link_to_video": null,
+      "course": 3
+    }
+  },
+  {
+    "model": "education.lesson",
+    "pk": 9,
+    "fields": {
+      "name": "Трапеция",
+      "description": "Должная быть волна за шеей",
+      "picture": "",
+      "link_to_video": null,
+      "course": 3
+    }
+  },
+  {
+    "model": "education.lesson",
+    "pk": 10,
+    "fields": {
+      "name": "Пресс",
+      "description": "все 100 кубиков",
+      "picture": "",
+      "link_to_video": null,
+      "course": 3
+    }
+  },
+  {
+    "model": "education.payment",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "date": "2023-11-21T01:06:19.372Z",
+      "course": 3,
+      "lesson": 4,
+      "sum_of_pay": 15000,
+      "way_of_pay": "translation"
+    }
+  },
+    {
+    "model": "education.payment",
+    "pk": 2,
+    "fields": {
+      "user": 4,
+      "date": "2023-11-22T01:06:19.372Z",
+      "course": null,
+      "lesson": 6,
+      "sum_of_pay": 8000,
+      "way_of_pay": "card"
+    }
+  },
+    {
+    "model": "education.payment",
+    "pk": 3,
+    "fields": {
+      "user": 4,
+      "date": "2023-11-22T01:36:19.372Z",
+      "course": 3,
+      "lesson": null,
+      "sum_of_pay": 14000,
+      "way_of_pay": "translation"
+    }
+  },
+    {
+    "model": "education.payment",
+    "pk": 4,
+    "fields": {
+      "user": 2,
+      "date": "2023-11-19T01:06:19.372Z",
+      "course": 3,
+      "lesson": 2,
+      "sum_of_pay": 12000,
+      "way_of_pay": "card"
+    }
+  },
+    {
+    "model": "education.payment",
+    "pk": 5,
+    "fields": {
+      "user": 5,
+      "date": "2023-11-19T01:00:19.372Z",
+      "course": 2,
+      "lesson": 7,
+      "sum_of_pay": 50000,
+      "way_of_pay": "translation"
+    }
+  },
+    {
+    "model": "education.payment",
+    "pk": 6,
+    "fields": {
+      "user": 4,
+      "date": "2023-11-24T01:06:19.372Z",
+      "course": null,
+      "lesson": 4,
+      "sum_of_pay": 2000,
+      "way_of_pay": "card"
+    }
+  },
+    {
+    "model": "education.payment",
+    "pk": 7,
+    "fields": {
+      "user": 2,
+      "date": "2023-11-25T01:06:19.372Z",
+      "course": null,
+      "lesson": 8,
+      "sum_of_pay": 15000,
+      "way_of_pay": "translation"
+    }
+  },
+    {
+    "model": "education.payment",
+    "pk": 8,
+    "fields": {
+      "user": 5,
+      "date": "2023-11-26T01:06:19.372Z",
+      "course": 2,
+      "lesson": null,
+      "sum_of_pay": 5000,
+      "way_of_pay": "card"
+    }
+  }
+]

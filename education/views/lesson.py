@@ -1,7 +1,7 @@
 from rest_framework.generics import RetrieveAPIView, ListAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 
 from education.models import Lesson
-from education.serializers.lesson import LessonSerializer
+from education.serializers.lesson import LessonSerializer, LessonListSerializer
 
 
 class LessonCreateAPIView(CreateAPIView):
@@ -10,7 +10,7 @@ class LessonCreateAPIView(CreateAPIView):
 
 class LessonListAPIView(ListAPIView):
     queryset = Lesson.objects.all()
-    serializer_class = LessonSerializer
+    serializer_class = LessonListSerializer
 
 
 class LessonRetrieveAPIView(RetrieveAPIView):

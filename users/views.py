@@ -1,8 +1,7 @@
-from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
-
+from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView, RetrieveAPIView
 
 from users.models import User
-from users.serializer import UserSerializer
+from users.serializer import UserSerializer, UserRetrieveSerializer
 
 
 class UserCreateAPIView(CreateAPIView):
@@ -14,13 +13,18 @@ class UserListAPIView(ListAPIView):
     serializer_class = UserSerializer
 
 
+class UserRetrieveAPIView(RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserRetrieveSerializer
+
+
 class UserUpdateAPIView(UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
     def get_object(self):
         self.object = super().get_object()
-        self.object = self.request.user
+        print(self.object)
         return self.object
 
 
