@@ -7,7 +7,6 @@ from education.serializers.course import *
 
 class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
-    # serializer_class = CourseSerializer
     default_serializer = CourseSerializer
     serializer = {
         "list": CourseListSerializer,
