@@ -15,4 +15,4 @@ class LessonListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lesson
-        exclude = ('id', 'link_to_video', )
+        fields = '__all__'
