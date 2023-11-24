@@ -9,6 +9,9 @@ class Course(models.Model):
     picture = models.ImageField(upload_to='course/', verbose_name='превью', **NULLABLE)
     description = models.TextField(verbose_name='описание', **NULLABLE)
 
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='owner',
+                              verbose_name='создатель курса')
+
     def __str__(self):
         return self.name
 

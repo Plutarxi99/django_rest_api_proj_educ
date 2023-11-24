@@ -9,6 +9,12 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class UserRetrieveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
+
+
 class UserPaymentDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

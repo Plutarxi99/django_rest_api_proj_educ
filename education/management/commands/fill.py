@@ -5,7 +5,7 @@ from django.core.management import BaseCommand
 from education.models import *
 from django.db import connection
 
-
+from users.models import User
 
 
 class Command(BaseCommand):
@@ -13,35 +13,53 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         list_table = [
-            'public.education_course',
-            'public.education_lesson',
-            'public.education_payment'
+        #     'public.education_course',
+        #     'public.education_lesson',
+        #     'public.education_payment',
+            'public.users_user',
         ]
         # Подключается к базе данных и обнуляет автоинкремент и удаляет наполнение таблиц
         with connection.cursor() as cursor:
             for list_table_item in list_table:
                 cursor.execute(f'DELETE FROM {list_table_item};')
                 cursor.execute(f'TRUNCATE TABLE {list_table_item} RESTART IDENTITY CASCADE;')
+        #
+        # name_course = (
+        #     "Химия.Анаболики", "Компьютер", "Мышцы", "Стол", "Лампочки", "Телефон",
+        # )
+        # description_course = (
+        #     "Для качков, чтобы быстро накачаться", "Узнаешь, все комплектующие", "Узнаешь, все мышцы в теле человека", "Узнай всё о столах", "Узнай об Вт и А", "Что такое это смартфон",
+        # )
+        #
+        # batch_size = 1000
+        # objs = (Course(name=name_course[i], description=description_course[i]) for i in range(len(name_course)))
+        # while True:
+        #     batch = list(islice(objs, batch_size))
+        #     if not batch:
+        #         break
+        #     Course.objects.bulk_create(batch, batch_size)
 
-        name = (
-            "Химия.Анаболики", "Компьютер", "Мышцы", "Стол", "Лампочки", "Телефон",
-        )
-        description = (
-            "Для качков, чтобы быстро накачаться", "Узнаешь, все комплектующие", "Узнаешь, все мышцы в теле человека", "Узнай всё о столах", "Узнай об Вт и А", "Что такое это смартфон",
-        )
-        batch_size = 1000
-        objs = (Course(name=name[i], description=description[i]) for i in range(len(name)))
-        while True:
-            batch = list(islice(objs, batch_size))
-            if not batch:
-                break
-            Course.objects.bulk_create(batch, batch_size)
+        # email = (
+        #     "test1@bk.ru", "test2@bk.ru", "test3@bk.ru", "test4@bk.ru", "test5@bk.ru", "test6@bk.ru",
+        # )
+        # password = (
+        #     "Qwe123", "Qwe123", "Qwe123", "Qwe123", "Qwe123", "Qwe123",
+        # )
+        #
+        # batch_size = 1000
+        # objs = (User(email=email[i], password=password[i], is_active=True) for i in range(len(email)))
+        # print(objs)
+        # while True:
+        #     batch = list(islice(objs, batch_size))
+        #     if not batch:
+        #         break
+        #     User.objects.bulk_create(batch, batch_size)
 
-        # course_list = [
-        #     {'name': 'Химия.Анаболики', 'picture': '', 'description': 'Для качков, чтобы быстро накачаться'},
-        #     {'name': 'Компьютер', 'picture': '', 'description': 'Узнаешь, все комплектующие'},
-        #     {'name': 'Мышцы', 'picture': '', 'description': 'Узнаешь, все мышцы в теле человека'},
-        # ]
+
+
+
+
+
         # lesson_list = [
         #     {'name': 'Креатин', 'description': 'Добавка для самочувствия', 'course': 1},
         #     {'name': 'Протеин', 'description': 'Добавка для роста мышц', 'course': 1},
@@ -73,5 +91,3 @@ class Command(BaseCommand):
         #     {'user': 5, 'date': '2023-11-26T01:06:19.372Z', 'course': 2, 'lesson': None, 'sum_of_pay': 5000,
         #      'way_of_pay': 'card'},
         # ]
-
-
