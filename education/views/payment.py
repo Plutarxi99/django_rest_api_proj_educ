@@ -12,7 +12,6 @@ class PaymentCreateAPIView(CreateAPIView):
     permission_classes = [IsAuthenticated]
 
 
-
 class PaymentListAPIView(ListAPIView):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
@@ -22,19 +21,16 @@ class PaymentListAPIView(ListAPIView):
     permission_classes = [IsAuthenticated]
 
 
-
 class PaymentRetrieveAPIView(RetrieveAPIView):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
     permission_classes = [IsAuthenticated]
 
 
-
 class PaymentUpdateAPIView(UpdateAPIView):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
     permission_classes = [IsAuthenticated]
-
 
 
 class PaymentDestroyAPIView(DestroyAPIView):

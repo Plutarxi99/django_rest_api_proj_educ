@@ -5,7 +5,6 @@ class ModeratorOrOwnerCourse(BasePermission):
     """
     Класс для прав модератора, он ни может не создать и удалить курс или урок, но может смотреть и патчить
     """
-
     def has_permission(self, request, view):
         if view.action in ['create']:
             if request.user.has_one_of_groups('moderator'):

@@ -23,17 +23,21 @@ class UserRetrieveAPIView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     default_serializer = UserRetrieveSerializer
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        user = self.request.user
-        if user == instance:
-            serializer = self.get_serializer(instance)
-            return Response(serializer.data)
-        else:
-            serializer = self.get_serializer(instance)
-            email = serializer.data['email']
-            last_name = serializer.data['last_name']
-            return Response(email, last_name)
+
+    # def retrieve(self, request, *args, **kwargs):
+    #     """
+    #     Используется для поулчения данных queryset можно задать любые значения для кого-либо
+    #     """
+    #     instance = self.get_object()
+    #     user = self.request.user
+    #     if user == instance:
+    #         serializer = self.get_serializer(instance)
+    #         return Response(serializer.data)
+    #     else:
+    #         serializer = self.get_serializer(instance)
+    #         email = serializer.data['email']
+    #         last_name = serializer.data['last_name']
+    #         return Response(email, last_name)
 
 
 class UserUpdateAPIView(UpdateAPIView):
