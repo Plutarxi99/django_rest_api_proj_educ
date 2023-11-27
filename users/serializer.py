@@ -3,6 +3,7 @@ from rest_framework import serializers
 from education.models import Payment
 from education.serializers.payment import PaymentUserSerializer
 from users.models import User
+from users.services import MixinGetUser
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -11,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class UserRetrieveSerializer(serializers.ModelSerializer):
+class UserRetrieveSerializer(MixinGetUser, serializers.ModelSerializer):
     user_pay = serializers.SerializerMethodField(read_only=True)
 
     def __init__(self, *args, **kwargs):
@@ -31,21 +32,12 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
     def get_user_pay(self, obj):
         return PaymentUserSerializer(Payment.objects.filter(user=obj.id), many=True).data
 
-    def _user(self):
-        """
-        Получение авторизированного пользователя, который делает запрос
-        """
-        user = None
-        request = self.context.get("request")
-        if request and hasattr(request, "user"):
-            user = request.user
-            return user
 
     def to_representation(self, instance):
         """Если пользователь обращается к своему профилю, то информация ограничивается"""
         ret = super().to_representation(instance)
-        if self._user() == instance:
-            return ret
+        if self._user()['user'] == instance:
+            return UserSerializer()
         else:
             ret.pop('password')
             ret.pop('last_name')
