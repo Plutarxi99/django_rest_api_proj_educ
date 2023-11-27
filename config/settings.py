@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
     'users',
     'education',
+    'subscription',
 
 ]
 
@@ -150,9 +151,8 @@ SUPERUSER_PASSWORD = os.getenv('SUPERUSER_PASSWORD')
 NULLABLE = {'blank': True, 'null': True}
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
 }
 
 # Настройки срока действия токенов

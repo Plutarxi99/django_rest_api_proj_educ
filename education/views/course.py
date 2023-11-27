@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from education.models import Course
+from education.paginators import CoursePaginator
 from education.permissions import ModeratorOrOwnerCourse
 from education.serializers.course import *
 
@@ -17,6 +18,7 @@ class CourseViewSet(ModelViewSet):
         "retrieve": CourseDetailSerializer,
     }
     permission_classes = [IsAuthenticated, ModeratorOrOwnerCourse]
+    pagination_class = CoursePaginator
 
     def get_serializer_class(self):
         return self.serializer.get(self.action, self.default_serializer)
