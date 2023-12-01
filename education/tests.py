@@ -94,6 +94,11 @@ class LessonTestCase(APITestCase):
             'link_to_video': 'https://www.youtube.com/'
         }
 
+        # response = self.client.post(
+        #     reverse('blog:article_update', args=[self.article.pk]),
+        #     data
+        # )
+
         response = self.client.patch(
             '/education/lesson/update/1/',
             data=data,

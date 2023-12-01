@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from education.models import Payment
-from education.serializers.payment import PaymentUserSerializer
+from payment.models import Payment
+from payment.serializers import PaymentUserSerializer
 from users.models import User
 from users.services import MixinGetUser
 
