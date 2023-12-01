@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.relations import SlugRelatedField
 
 from education.models import Lesson, Course
-from education.validations import LinkInVideoValidator
+from education.validators import LinkInVideoValidator
 
 
 class LessonSerializer(serializers.ModelSerializer):

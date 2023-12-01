@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from education.models import Course, Lesson, Payment
+from education.models import Course, Lesson
 
 
 @admin.register(Course)
@@ -12,7 +12,3 @@ class CourseAdmin(admin.ModelAdmin):
 class LessonAdmin(admin.ModelAdmin):
     list_display = ('name', )
 
-
-@admin.register(Payment)
-class PaymentAdmin(admin.ModelAdmin):
-    list_display = ('user', )

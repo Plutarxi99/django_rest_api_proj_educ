@@ -2,7 +2,8 @@ from django.db.models import Count
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
-from education.models import Course, Lesson, Payment
+from education.models import Course, Lesson
+from payment.models import Payment
 from education.serializers.lesson import LessonListSerializer, LessonSerializer
 from subscription.models import Subscription
 from subscription.serializers import SubsSerializer
@@ -10,12 +11,14 @@ from users.services import MixinGetUser
 
 
 class CourseSerializer(serializers.ModelSerializer):
+    """ Базовый сериализатор для вывода всех курсов """
     class Meta:
         model = Course
         fields = '__all__'
 
 
 class CourseListSerializer(serializers.ModelSerializer):
+    """ Сериализатор для вывода списка курсов """
     lesson_count = serializers.SerializerMethodField()
     lessons = LessonListSerializer(source='lesson', read_only=True, many=True)
 
