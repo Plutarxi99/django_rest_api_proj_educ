@@ -10,8 +10,8 @@ class Subscription(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='пользователь', on_delete=models.CASCADE,
                              related_name='user')
+    update_at = models.DateTimeField(auto_now=True, verbose_name='время последнего изменения')
 
     class Meta:
         verbose_name = 'подписка'
         verbose_name_plural = 'подписки'
-
