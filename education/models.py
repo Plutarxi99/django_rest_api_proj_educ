@@ -9,12 +9,22 @@ class Course(models.Model):
     picture = models.ImageField(upload_to='course/', verbose_name='превью', **NULLABLE)
     description = models.TextField(verbose_name='описание', **NULLABLE)
     amount = models.PositiveIntegerField(default=0, verbose_name='цена курса')
-
+    update_the_last_one = models.DateTimeField(verbose_name='время прошлого изменения', **NULLABLE)
+    update_at = models.DateTimeField(auto_now=True, verbose_name='время последнего изменения')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='owner',
                               verbose_name='создатель курса')
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        """
+        Если объект модели изменяется, то идет запись изменения
+        update_the_last_one: это поле обновление записывает предпоследнюю дату изменeния курса
+        update_at: это поле последнего изменения
+        """
+        self.update_the_last_one = self.update_at
+        super(Course, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'курс'
@@ -26,6 +36,7 @@ class Lesson(models.Model):
     description = models.TextField(verbose_name='описание', **NULLABLE)
     picture = models.ImageField(upload_to='course/', verbose_name='превью', **NULLABLE)
     link_to_video = models.URLField(max_length=200, **NULLABLE)
+    update_at = models.DateTimeField(auto_now=True, verbose_name='время последнего изменения')
 
     course = models.ForeignKey(Course, on_delete=models.SET_NULL, related_name='lesson', **NULLABLE)
 
@@ -36,23 +47,3 @@ class Lesson(models.Model):
         verbose_name = 'урок'
         verbose_name_plural = 'уроки'
         # order_with_respect_to = "course"
-
-
-# class Payment(models.Model):
-#     CARD = 'card'
-#     TRANSLATION = 'translation'
-#
-#     WAY = [
-#         (CARD, 'card'),
-#         (TRANSLATION, 'translation'),
-#     ]
-#
-#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
-#                              verbose_name='покупатель')
-#     date = models.DateTimeField(auto_now_add=True, verbose_name='дата оплаты')
-#     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='купил курс', related_name='payment',
-#                                **NULLABLE)
-#     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name='купил урок', related_name='payment',
-#                                **NULLABLE)
-#     sum_of_pay = models.PositiveIntegerField(verbose_name='сумма оплаты')
-#     way_of_pay = models.CharField(choices=WAY, verbose_name='способ оплаты', **NULLABLE)

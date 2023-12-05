@@ -1,13 +1,15 @@
-from django.db.models import Count
+from datetime import timedelta
+
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from education.models import Course
 from education.paginators import CoursePaginator
 from education.permissions import ModeratorOrOwnerCourse
 from education.serializers.course import *
+from education.services.views import send_mail_subs_users
+from education.tasks import check_update_subs
 
 
 class CourseViewSet(ModelViewSet):
@@ -41,9 +43,25 @@ class CourseViewSet(ModelViewSet):
         """Для отображения одного курса и его состояние подписки, а также уроки"""
         return super().retrieve(self, request, *args, **kwargs)
 
-    def partial_update(self, request, *args, **kwargs):
-        """Для изменения курса"""
-        return super().partial_update(self, request, *args, **kwargs)
+    # def partial_update(self, request, *args, **kwargs):
+    #     kwargs['partial'] = True
+    #     instance = self.get_object()
+    #     check_update_subs.delay(instance=instance, name_course=instance,
+    #                             list_email_subs=['egor.shievanov@gmail.com'])
+    #     return self.update(request, *args, **kwargs)
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        check_update_subs.delay(instance=Course.objects.get(pk=instance.pk).pk)
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
 
     def get_queryset(self):
         """
@@ -57,5 +75,3 @@ class CourseViewSet(ModelViewSet):
             return queryset
         else:
             return queryset.filter(owner=user.pk)
-
-
