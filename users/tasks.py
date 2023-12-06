@@ -9,7 +9,7 @@ import calendar
 from django.utils.timezone import now
 
 
-
+@shared_task
 def check_last_login():
     """
     Если пользователь не заходил больше месяца, то его блокируют
@@ -27,3 +27,4 @@ def check_last_login():
         user.is_active = False
         print(user.is_active)
         user.save()
+    return 'Пользователи, которые заходили больше месяца назад. Успешно заблокированы'
