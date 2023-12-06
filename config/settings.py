@@ -13,8 +13,11 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+from celery.schedules import crontab
 from dotenv import load_dotenv
 import ast
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -226,40 +229,15 @@ CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
 # URL-адрес брокера результатов, также Redis
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
 
-# Часовой пояс для работы Celery
-CELERY_TIMEZONE = "Australia/Tasmania"
+# Настройка для полноценного использования django-celery-beat
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
-# Флаг отслеживания выполнения задач
-CELERY_TASK_TRACK_STARTED = True
-
-# Максимальное время на выполнение задачи
-CELERY_TASK_TIME_LIMIT = 30 * 60
-
-# настройка для бд переодических задач
-CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-
-REDIS_URL = "redis://localhost:6379/1"
-
-CELERY_ACCEPT_CONTENT = ['application/json']
-
-CELERY_RESULT_SERIALIZER = 'json'
-
-CELERY_TASK_SERIALIZER = 'json'
-
+# Настройка для выполнения периодических задач
 CELERY_BEAT_SCHEDULE = {
-    'add-every-30-seconds': {
-        'task': 'education.tasks.check_condition',
-        'schedule': 30.0,
-        'args': (16, 16)
-    },
-    'check_user_last_login': {
-        'task': 'users.tasks.check_last_login',
-        'schedule': 30.0,
-        'args': (16, 16)
+    'check_last_login': {
+        'task': 'users.tasks.check_last_login',  # The name of the task
+        'schedule': crontab(hour="*/24"),  # How often the task should run
     },
 }
-# REDIS_HOST = 'localhost'
-# REDIS_PORT = '6379'
-# CELERY_BROKER_URL = 'redis://localhost:6379'
-# BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT
+
 

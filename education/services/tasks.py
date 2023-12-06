@@ -2,8 +2,15 @@ from education.services.views import send_mail_subs_users
 from subscription.models import Subscription
 from users.models import User
 
+from django_celery_beat.models import PeriodicTask, ClockedSchedule
+
 
 def back_send_mail(obj):
+    """
+    Отправка сообщений
+    @param obj: словарь значений курса
+    @return:
+    """
     # Названмия курса
     name_course = obj['name']
     # Получаем <QuerySet [1, 2, 4]> список pk подписок и узнаем в подписках user
@@ -19,3 +26,28 @@ def back_send_mail(obj):
         mailing_message_body=f"Успей первым узнать, что изменилось",
         tuple_email=tuple_email,
     )
+
+
+def time_set(target_time, name_task):
+    """
+    Создание или обновление переодической задачи для отправки сообщения об обнорвлении курса
+    @param target_time: дата отправки
+    @param name_task: названия задачи
+    @return:
+    """
+    if not PeriodicTask.objects.filter(name=name_task):
+        clocked_schedule = ClockedSchedule.objects.create(clocked_time=target_time)
+
+        PeriodicTask.objects.create(
+            clocked=clocked_schedule,
+            name=name_task,
+            description="Если после обновления курса прошло более 4 часов. Идёт отправка сообщений",
+            one_off=True,
+            task="education.tasks.send_mail_update_course.add",
+        )
+    else:
+        per_task = PeriodicTask.objects.get(name=name_task) # получения объекта переодической задача
+        clocked_schedule = ClockedSchedule.objects.create(clocked_time=target_time) # создания нового объекта модели ClockedSchedule
+        per_task.clocked = clocked_schedule # переопределяем новое значения для объекта PeriodicTask
+        per_task.save()
+

@@ -1,40 +1,39 @@
 from datetime import timedelta
 
 from celery import shared_task
-from celery.app import task
 
 from education.models import Course
-from education.services.tasks import back_send_mail
+from education.services.tasks import back_send_mail, time_set
 
-
-# from education.services.views import send_mail_subs_users
-# from subscription.models import Subscription
-# from users.models import User
 
 @shared_task
-def check_update_subs(instance: int):
-    # получение списка объекта курса
-    obj = tuple(Course.objects.filter(pk=instance).values())[0]
-    # получение разниц дат обновление курса
-    delta = obj['update_at'] - obj['update_the_last_one']
-    # Если курс изменился менее, чем на 4 часа, то отсылка не отправляется
-    if delta > timedelta(hours=4):
-        back_send_mail(obj)
-        print('Время настало')
-    else:
-        print('Время не настало')
-
-
-def check_condition():
+def send_mail_update_course():
+    """
+    Массовая рассылка для подписантов этого курса
+    и отправка сообщений
+    @return:
+    """
     for obj in Course.objects.all():
         # получение списка объекта курса
         obj = tuple(Course.objects.filter(pk=obj.pk).values())[0]
-        # получение разниц дат обновление курса
-        delta = obj['update_at'] - obj['update_the_last_one']
-        # Если курс изменился менее, чем на 4 часа, то отсылка не отправляется
-        if delta > timedelta(hours=4):
-            back_send_mail(obj)
-            print('Время настало')
-        else:
-            print('Время не настало')
+        back_send_mail(obj)
+        print('Время настало')
+
+
+@shared_task
+def check_update_subs(instance: int):
+    """
+    Создание отложенной задача, при обновлении курса
+    идёт запись в переодическую задачу, через 4 часа после обновлении курса
+    если ещё раз обновлеся курс, то идёт пересохранения даты отправка
+    @param instance:
+    @return:
+    """
+    time_diff = timedelta(hours=4)
+    # получение списка объекта курса
+    obj = tuple(Course.objects.filter(pk=instance).values())[0]
+    # Время отправки сообщений
+    target_time = obj['update_at'] + time_diff
+    # делается переодическая задача на отправку сообщений через 4 часа
+    time_set(target_time=target_time, name_task="send-mail-update-course")
 
