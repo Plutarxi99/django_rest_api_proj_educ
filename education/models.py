@@ -13,6 +13,7 @@ class Course(models.Model):
     update_at = models.DateTimeField(auto_now=True, verbose_name='время последнего изменения')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='owner',
                               verbose_name='создатель курса')
+    is_send_update = models.BooleanField(default=False, verbose_name='отправлено ли сообщение об обновлении курса')
 
     def __str__(self):
         return self.name

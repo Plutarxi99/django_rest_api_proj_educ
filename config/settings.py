@@ -238,6 +238,10 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'users.tasks.check_last_login',  # The name of the task
         'schedule': crontab(hour="*/24"),  # How often the task should run
     },
+    'check_update_subs': {
+        'task': 'education.tasks.send_mail_update_course',  # The name of the task
+        'schedule': crontab(hour="*/4"),  # How often the task should run
+    }
 }
 
 
