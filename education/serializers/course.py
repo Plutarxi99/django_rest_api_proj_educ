@@ -12,6 +12,7 @@ from users.services import MixinGetUser
 
 class CourseSerializer(serializers.ModelSerializer):
     """ Базовый сериализатор для вывода всех курсов """
+
     class Meta:
         model = Course
         fields = '__all__'
@@ -28,7 +29,6 @@ class CourseListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = '__all__'
-
 
 
 class CourseDetailSerializer(MixinGetUser, serializers.ModelSerializer):
