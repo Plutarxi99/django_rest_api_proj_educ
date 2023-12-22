@@ -17,8 +17,6 @@ from celery.schedules import crontab
 from dotenv import load_dotenv
 import ast
 
-
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -59,12 +57,6 @@ INSTALLED_APPS = [
 
 ]
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_FILTER_BACKENDS': (
-#         'django_filters.rest_framework.DjangoFilterBackend',
-#     ),
-# }
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -100,7 +92,13 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': ast.literal_eval(os.getenv('DATABASE_LOGIN'))
+    'default': {
+        "ENGINE": os.getenv("ENGINE_DB"),
+        "NAME": os.getenv("NAME_BD"),
+        "USER": os.getenv("USER_BD"),
+        'PASSWORD': os.getenv("PASSWORD_BD"),
+        'HOST': os.getenv("HOST_BD")
+    }
 }
 
 # Password validation
@@ -235,13 +233,11 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 # Настройка для выполнения периодических задач
 CELERY_BEAT_SCHEDULE = {
     'check_last_login': {
-        'task': 'users.tasks.check_last_login',  # The name of the task
-        'schedule': crontab(hour="*/24"),  # How often the task should run
+        'task': 'users.tasks.check_last_login',
+        'schedule': crontab(hour="*/24"),
     },
     'check_update_subs': {
-        'task': 'education.tasks.send_mail_update_course',  # The name of the task
-        'schedule': crontab(hour="*/4"),  # How often the task should run
+        'task': 'education.tasks.send_mail_update_course',
+        'schedule': crontab(hour="*/4"),
     }
 }
-
-
